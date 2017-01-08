@@ -12,9 +12,11 @@ namespace sysBOT
 {
     public partial class Form1 : Form
     {
+        public Connection conn = new Connection();
         public Form1()
         {
             InitializeComponent();
+            
         }
     }
 }
