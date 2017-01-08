@@ -19,8 +19,13 @@ namespace sysBOT
 
             client.OnConnected += clientConnected;
             client.OnJoinedChannel += clientJoinedChannel;
-
+            client.OnChatCommandReceived += chatCommandReceived;
             client.Connect();
+        }
+
+        private static void chatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        {
+            client.SendMessage(e.Command.Command);
         }
 
         private static void clientJoinedChannel(object sender, OnJoinedChannelArgs e)
