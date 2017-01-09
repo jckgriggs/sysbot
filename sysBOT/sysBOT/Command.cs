@@ -8,16 +8,10 @@ namespace sysBOT
 {
     class Command
     {
-        public string command
-        {
-            get;
-            set;
-        }
+        public string command { get; set; }
 
-        public string response
-        {
-            get;
-            set;
-        }
+        public string response { get; set; }
+
+        public bool enabled { get; set; }
     }
 }

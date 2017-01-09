@@ -13,6 +13,7 @@ namespace sysBOT
     public class Connection
     {
         static TwitchClient client;
+        static CommandProcessor proc = new CommandProcessor();
         static Connection()
         {
             client = new TwitchLib.TwitchClient(new TwitchLib.Models.Client.ConnectionCredentials(ConfigurationManager.AppSettings.Get("botUsername"), ConfigurationManager.AppSettings.Get("botOauth")), ConfigurationManager.AppSettings.Get("channel"), '!', '!', true);
@@ -20,12 +21,18 @@ namespace sysBOT
             client.OnConnected += clientConnected;
             client.OnJoinedChannel += clientJoinedChannel;
             client.OnChatCommandReceived += chatCommandReceived;
+            client.OnUserJoined += userJoinedChannel;
             client.Connect();
+        }
+
+        private static void userJoinedChannel(object sender, OnUserJoinedArgs e)
+        {
+            Console.WriteLine($"{e.Username} has joined");
         }
 
         private static void chatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            client.SendMessage(e.Command.Command);
+            client.SendMessage(proc.Process(e.Command.Command));
         }
 
         private static void clientJoinedChannel(object sender, OnJoinedChannelArgs e)
