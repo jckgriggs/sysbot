@@ -1,39 +1,40 @@
-﻿using MaterialSkin;
-using MaterialSkin.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
+
 
 namespace sysBOT
 {
-    public partial class Form1 : MaterialForm
+    public partial class Login : MaterialForm
     {
-        public Connection conn;
-        public Form1(string username, string oauth, string channel)
+        public Login()
         {
             InitializeComponent();
-
-            Thread init = new Thread(() => initConnection(username, oauth, channel));
-            init.SetApartmentState(ApartmentState.STA);
-            init.IsBackground = false;
-            init.Start();
-            init.Join();
             var materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
             materialSkinManager.Theme = MaterialSkinManager.Themes.LIGHT;
             materialSkinManager.ColorScheme = new ColorScheme(Primary.BlueGrey800, Primary.BlueGrey900, Primary.BlueGrey500, Accent.LightBlue200, TextShade.WHITE);
         }
 
-        public void initConnection(string username, string oauth, string channel)
+        private void Login_Load(object sender, EventArgs e)
         {
-            conn = new Connection(username, oauth, channel);
+            
+        }
+
+        private void materialRaisedButton1_Click(object sender, EventArgs e)
+        {
+            Form1 mainform = new Form1(username.Text, oauth.Text, channel.Text);
+            this.Hide();           
+            mainform.ShowDialog();
+            this.Close();
         }
     }
 }

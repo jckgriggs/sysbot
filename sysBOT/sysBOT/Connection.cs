@@ -13,36 +13,33 @@ namespace sysBOT
     public class Connection
     {
         static TwitchClient client;
-        static CommandProcessor proc = new CommandProcessor();
-        static Connection()
-        {
-            client = new TwitchLib.TwitchClient(new TwitchLib.Models.Client.ConnectionCredentials(ConfigurationManager.AppSettings.Get("botUsername"), ConfigurationManager.AppSettings.Get("botOauth")), ConfigurationManager.AppSettings.Get("channel"), '!', '!', true);
+        static Twitch twitch;
 
-            client.OnConnected += clientConnected;
-            client.OnJoinedChannel += clientJoinedChannel;
-            client.OnChatCommandReceived += chatCommandReceived;
-            client.OnUserJoined += userJoinedChannel;
+        public Connection(string username, string oauth, string channel)
+        {
+            client = new TwitchLib.TwitchClient(new TwitchLib.Models.Client.ConnectionCredentials(username, oauth), channel, '!', '!', true);
+            twitch = new Twitch(client); //Pass on client info to API handler
+
+            //BEGIN: API Calls
+            client.OnConnected += twitch.clientConnected;
+            client.OnJoinedChannel += twitch.clientJoinedChannel;
+            client.OnChatCommandReceived += twitch.chatCommandReceived;
+            client.OnUserJoined += twitch.userJoinedChannel;
+            client.OnConnectionError += twitch.clientConnectionError;
+            client.OnDisconnected += twitch.clientDisconnected;
+            client.OnHostingStarted += twitch.hostingStarted;
+            client.OnHostingStopped += twitch.hostingStopped;
+            client.OnIncorrectLogin += twitch.incorrectLogin;
+            client.OnModeratorJoined += twitch.moderatorJoined;
+            client.OnModeratorLeft += twitch.moderatorLeft;
+            client.OnNewSubscriber += twitch.newSubscriber;
+            client.OnReSubscriber += twitch.userResubscribed;
+            client.OnUserBanned += twitch.userBanned;
+            client.OnUserLeft += twitch.userLeftChannel;
+            client.OnUserTimedout += twitch.userTimedout;
+            //END: API Calls
+
             client.Connect();
-        }
-
-        private static void userJoinedChannel(object sender, OnUserJoinedArgs e)
-        {
-            Console.WriteLine($"{e.Username} has joined");
-        }
-
-        private static void chatCommandReceived(object sender, OnChatCommandReceivedArgs e)
-        {
-            client.SendMessage(proc.Process(e.Command.Command));
-        }
-
-        private static void clientJoinedChannel(object sender, OnJoinedChannelArgs e)
-        {
-            Console.WriteLine($"Client joined channel: {e.Channel}");
-        }
-
-        private static void clientConnected(object sender, OnConnectedArgs e)
-        {
-            Console.WriteLine("Client connected to Twitch!");
         }
     }
 }

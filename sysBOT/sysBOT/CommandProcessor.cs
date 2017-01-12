@@ -15,6 +15,7 @@ namespace sysBOT
             AddCommand("info", "sysBOT 0.2.0 | https://www.jackgriggs.net/sysbot");
         }
 
+        //This method locates the index of a specific command in the command list
         public int index(string command)
         {
             for (int i = 0; i < this.Command.Count; i++)
@@ -27,6 +28,7 @@ namespace sysBOT
             return -1;
         }
 
+        //This function returns a response to a specified command
         public string Process(string command)
         {
             if (CommandExists(command))
@@ -35,6 +37,7 @@ namespace sysBOT
                 return $"Command '{command}' does not exist";
         }
 
+        //This function enables a specified command
         public void EnableCommand(string command)
         {
             if (CommandExists(command))
@@ -43,6 +46,7 @@ namespace sysBOT
                 Console.WriteLine($"Command '{command}' does not exist");
         }
 
+        //This function disables a specified command
         public void DisableCommand(string command)
         {
             if(CommandExists(command))
@@ -51,6 +55,7 @@ namespace sysBOT
                 Console.WriteLine($"Command '{command}' does not exist");
         }
 
+        //This function searches for a specified command in the command list
         public bool CommandExists(string command)
         {
             for (int i = 0; i < this.Command.Count; i++)
@@ -63,11 +68,13 @@ namespace sysBOT
             return false;
         }
 
+        //This function adds commands and responses to the command list
         public void AddCommand(string command, string response)
         {
             this.Command.Add(new Command { command = command, response = response, enabled = true });
         }
 
+        //This function deletes commands and responses from the command list
         public void DeleteCommand(string command)
         {
             this.Command.RemoveAt(index(command));
