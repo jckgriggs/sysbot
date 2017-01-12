@@ -15,10 +15,13 @@ namespace sysBOT
         static TwitchClient client;
         static Twitch twitch;
 
-        public Connection(string username, string oauth, string channel)
+        public Connection(string username, string oauth, string channel, string token)
         {
+            Console.WriteLine($"Connection Channel: {channel}");
             client = new TwitchLib.TwitchClient(new TwitchLib.Models.Client.ConnectionCredentials(username, oauth), channel, '!', '!', true);
-            twitch = new Twitch(client); //Pass on client info to API handler
+            twitch = new Twitch(client, channel, oauth, token); //Pass on client info to API handler
+            TwitchApi.SetAccessToken(token);
+            TwitchApi.SetClientId("29gmfry8w4deaxesx55owtfna8x4pj");
 
             //BEGIN: API Calls
             client.OnConnected += twitch.clientConnected;
