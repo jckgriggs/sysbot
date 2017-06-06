@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TwitchLib;
 using TwitchLib.Events.Client;
+using Newtonsoft.Json;
 
 namespace sysBOT
 {
@@ -14,14 +15,17 @@ namespace sysBOT
         public static string Channel;
         string Oauth;
         string Token;
-        static CommandProcessor proc = new CommandProcessor();
+        static CommandProcessor proc = new CommandProcessor();    
+        public static string Username;
+        Alerts alert = new Alerts();
 
-        public Twitch(TwitchClient client, string channel, string oauth, string token)
+        public Twitch(TwitchClient client, string channel, string oauth, string token, string username)
         {
             this.Client = client;
             Channel = channel;
             this.Oauth = oauth;
             this.Token = token;
+            Username = username;
         }
         public Twitch()
         {
@@ -34,6 +38,7 @@ namespace sysBOT
             Console.WriteLine($"{e.Username} has joined");
             Console.ForegroundColor = ConsoleColor.White;
             Form1.invokeAlert($"{e.Username} has joined");
+            alert.UserJoined(e.Username);
         }
         internal void chatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {

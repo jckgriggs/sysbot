@@ -12,7 +12,7 @@ namespace sysBOT
 
         public CommandProcessor()
         {
-            AddCommand("info", "sysBOT 0.2.0 | https://www.jackgriggs.net/sysbot");
+            AddCommand("info", "sysBOT 0.1.6 | https://www.jackgriggs.net/sysbot");
         }
 
         //This method locates the index of a specific command in the command list
